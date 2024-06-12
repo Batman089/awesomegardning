@@ -1,14 +1,15 @@
+version: '3.8'
 services:
   backend:
     build: backend
     ports:
       - 8080:8080
     environment:
-      - POSTGRES_DB=gradendb
+      - POSTGRES_DB=gardnerdb
     networks:
       - spring-postgres
   db:
-    image: postgres:14-alpine
+    image: postgres:14
     restart: always
     secrets:
       - db-password
@@ -17,11 +18,11 @@ services:
     networks:
       - spring-postgres
     environment:
-      - POSTGRES_DB=gradendb
+      - POSTGRES_DB=gardnerdb
       - POSTGRES_USER=gardner
       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
-    expose:
-      - 5432
+    ports:
+      - 1234:5432
   pgadmin:
     image: dpage/pgadmin4
     restart: always

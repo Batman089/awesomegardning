@@ -1,1 +1,1 @@
-INSERT INTO PLANTS(name) values ('Docker');
+INSERT INTO PLANTS(name) values ('Tree');
