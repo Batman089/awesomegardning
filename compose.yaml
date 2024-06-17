@@ -1,0 +1,54 @@
+version: '3.8'
+services:
+  backend:
+    build: backend
+    ports:
+      - 8080:8080
+    environment:
+      - POSTGRES_DB=gardnerdb
+    networks:
+      - spring-postgres
+  db:
+    image: postgres:14
+    restart: always
+    secrets:
+      - db-password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - spring-postgres
+    environment:
+      - POSTGRES_DB=gardnerdb
+      - POSTGRES_USER=gardner
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    ports:
+      - 1234:5432
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - 5050:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=Jassinakhlaqi@hotmail.com
+      - PGADMIN_DEFAULT_PASSWORD=gardnerpg
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - spring-postgres
+  client:
+    build: client
+    ports:
+      - 4200:4200
+    depends_on:
+      - backend
+    networks:
+      - spring-postgres
+
+volumes:
+  db-data:
+  pgadmin:
+secrets:
+  db-password:
+    file: db/password.txt
+networks:
+  spring-postgres:
