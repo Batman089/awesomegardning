@@ -35,6 +35,15 @@ services:
       - pgadmin:/var/lib/pgadmin
     networks:
       - spring-postgres
+  client:
+    build: client
+    ports:
+      - 4200:4200
+    depends_on:
+      - backend
+    networks:
+      - spring-postgres
+
 volumes:
   db-data:
   pgadmin:
