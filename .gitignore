@@ -20,7 +20,7 @@
 *.launch
 .settings/
 *.sublime-workspace
-/.idea/
+/.idea/*
 /.idea/sonarlint/
 
 # Compiled source #
