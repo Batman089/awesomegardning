@@ -27,7 +27,7 @@ RUN mkdir -p target/dependency
 WORKDIR /workdir/server/target/dependency
 RUN jar -xf ../*.jar
 
-FROM amazoncorretto:21.0.3
+FROM amazoncorretto:17.0.11
 
 EXPOSE 8080
 VOLUME /tmp
