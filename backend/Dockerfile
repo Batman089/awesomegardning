@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
 
-FROM --platform=$BUILDPLATFORM maven:3.8.5-eclipse-temurin-17 AS builder
+FROM --platform=$BUILDPLATFORM maven:3.8.5-amazoncorretto-17 AS builder
 WORKDIR /workdir/server
 COPY pom.xml /workdir/server/pom.xml
 RUN mvn dependency:go-offline
@@ -27,7 +27,7 @@ RUN mkdir -p target/dependency
 WORKDIR /workdir/server/target/dependency
 RUN jar -xf ../*.jar
 
-FROM amazoncorretto:21.0.3
+FROM amazoncorretto:17.0.2
 
 EXPOSE 8080
 VOLUME /tmp
