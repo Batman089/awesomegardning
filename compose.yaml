@@ -14,13 +14,18 @@ services:
       - db-password
     volumes:
       - db-data:/var/lib/postgresql/data
+      - ./db/pg_hba.conf:/etc/postgres/data/pg_hba.conf
+      - ./db/postgresql.conf:/etc/postgres/data/postgresql.conf
     networks:
       - spring-postgres
     environment:
       - POSTGRES_DB=gardnerdb
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
     expose:
       - 5432
+    ports:
+      - 5432:5432
   pgadmin:
     image: dpage/pgadmin4
     restart: always
