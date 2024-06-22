@@ -5,11 +5,10 @@ import com.company.project.entity.PlantDto;
 import com.company.project.repository.PlantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -17,40 +16,50 @@ public class PlantService {
 
     private final PlantRepository plantRepository;
 
-
-    @Transactional()
-    public List<PlantDto> findAllPlants() {
-        return plantRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+    public List<Plant> findAllPlants() {
+        return plantRepository.findAll();
     }
 
-    public PlantDto createPlant(PlantDto plantDto) {
-        Plant plant = convertToEntity(plantDto);
-        Plant savedPlant = plantRepository.save(plant);
-        return convertToDto(savedPlant);
+    public Plant createPlant(PlantDto plantDto) {
+        Plant plant = new Plant();
+        convertToEntity(plantDto, plant);
+        return plantRepository.save(plant);
     }
 
-    public PlantDto getPlant(UUID id) {
-        Plant plant = plantRepository.findById(id).orElse(null);
-        return plant != null ? convertToDto(plant) : null;
+    public Plant getPlant(UUID id) {
+        Optional<Plant> plant = plantRepository.findById(id);
+        if (plant.isPresent()) {
+            return plant.get();
+        }else {
+            return null;
+        }
     }
 
-    public PlantDto updatePlant(PlantDto plantDto) {
-        Plant plant = convertToEntity(plantDto);
-        Plant updatedPlant = plantRepository.save(plant);
-        return convertToDto(updatedPlant);
+    public Plant updatePlant(PlantDto plantDto, UUID plantId) {
+        Optional<Plant> plantOptional = plantRepository.findById(plantId);
+        if (plantOptional.isPresent()){
+            convertToEntity(plantDto, plantOptional.get());
+            return plantOptional.get();
+        } else {
+            return null;
+        }
     }
 
     public void deletePlant(UUID id) {
-        plantRepository.deleteById(id);
+        try {
+            plantRepository.deleteById(id);
+        }  catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    private PlantDto convertToDto(Plant plant) {
-        return new PlantDto(plant.getId(), plant.getName(), plant.getDescription());
-    }
-
-    private Plant convertToEntity(PlantDto plantDto) {
-        return new Plant(plantDto.getId(), plantDto.getName(), plantDto.getDescription());
+    private void convertToEntity(PlantDto plantDto, Plant plant) {
+        if (plantDto.getName() != null) {
+            plant.setName(plantDto.getName());
+        }
+        if (plantDto.getDescription() != null) {
+            plant.setDescription(plantDto.getDescription());
+        }
     }
 }
