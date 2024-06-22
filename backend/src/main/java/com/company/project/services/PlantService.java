@@ -2,6 +2,7 @@ package com.company.project.services;
 
 import com.company.project.entity.Plant;
 import com.company.project.entity.PlantDto;
+import com.company.project.exceptions.ObjectNotFoundException;
 import com.company.project.repository.PlantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,12 @@ public class PlantService {
         return plantRepository.save(plant);
     }
 
-    public Plant getPlant(UUID id) {
-        Optional<Plant> plant = plantRepository.findById(id);
+    public Plant getPlant(UUID plantId) {
+        Optional<Plant> plant = plantRepository.findById(plantId);
         if (plant.isPresent()) {
             return plant.get();
         }else {
-            return null;
+            throw new ObjectNotFoundException(plantId, Plant.class);
         }
     }
 
@@ -41,15 +42,15 @@ public class PlantService {
             convertToEntity(plantDto, plantOptional.get());
             return plantOptional.get();
         } else {
-            return null;
+            throw new ObjectNotFoundException(plantId, Plant.class);
         }
     }
 
-    public void deletePlant(UUID id) {
+    public void deletePlant(UUID plantId) {
         try {
-            plantRepository.deleteById(id);
+            plantRepository.deleteById(plantId);
         }  catch (Exception e) {
-            e.printStackTrace();
+            throw new ObjectNotFoundException(plantId, Plant.class);
         }
 
     }

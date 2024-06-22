@@ -96,7 +96,7 @@ public class PlantController {
             })
     })
     public Plant createPlant(
-            @Parameter (description= "This is a PlantDto without Id.") @RequestBody @Valid PlantDto plantDto) {
+            @Parameter (description= "This is a PlantDto (without Id).") @RequestBody @Valid PlantDto plantDto) {
         return plantService.createPlant(plantDto);
     }
 
