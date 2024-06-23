@@ -88,11 +88,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Deploy to Heroku
-      uses: akhileshns/heroku-deploy@v3.12.12 # This action deploys to Heroku
-      with:
-        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-        heroku_app_name: "safe-awesomegardning" # Replace with your Heroku app name
-        heroku_email: "Jassinakhlaqi@hotmail.com" # Replace with your Heroku email
-        healthcheck: true # Optional, waits for the app to boot
-        dontuseforce: 1 # Optional, set to true to prevent force push
+### Deploy to Heroku
+      ###    - name: Deploy to Heroku
+      ###    uses: akhileshns/heroku-deploy@v3.12.12 # This action deploys to Heroku
+      ###      with:
+      ###      heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+      ###  heroku_app_name: "safe-awesomegardning" # Replace with your Heroku app name
+      ###  heroku_email: "Jassinakhlaqi@hotmail.com" # Replace with your Heroku email
+      ###  healthcheck: true # Optional, waits for the app to boot
+      ###  dontuseforce: 1 # Optional, set to true to prevent force push
