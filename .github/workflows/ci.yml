@@ -88,11 +88,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.5.3
+    - name: Deploy to Heroku
+      uses: akhileshns/heroku-deploy@v3.12.12 # This action deploys to Heroku
       with:
-        ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
-
-    - name: Deploy to server
-      run: |
-        ssh user@your-server "cd /path/to/your/app && git pull"
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        heroku_app_name: "safe-awesomegardning" # Replace with your Heroku app name
+        heroku_email: "Jassinakhlaqi@hotmail.com" # Replace with your Heroku email
+        usedocker: true # Required for deploying Java applications
