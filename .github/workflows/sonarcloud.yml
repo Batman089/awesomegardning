@@ -54,4 +54,4 @@ jobs:
           args:
             -Dsonar.projectKey=awesomegardning
             -Dsonar.organization=batman089
-          projectBaseDir: .
+          projectBaseDir: ../../..
