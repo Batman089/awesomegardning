@@ -68,7 +68,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
+      with:
+        args: >
+            - Dsonar.organization=batman089
+            - Dsonar.projectKey=awesomegardning
   deploy:
     needs: [build_backend, build_client, sonar]
     runs-on: ubuntu-latest
