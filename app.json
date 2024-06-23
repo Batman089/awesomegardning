@@ -1,10 +1,26 @@
 {
   "buildpacks": [
     {
-      "url": "heroku/java"
+      "url": "heroku/nodejs",
+      "config": {
+        "NODE_MODULES_CACHE": "false"
+      }
     },
     {
-      "url": "heroku/nodejs"
+      "url": "heroku/java"
     }
-  ]
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "environments": {
+    "test": {
+      "scripts": {
+        "test-setup": "cd client && npm install --only=dev && npm install && cd ../backend && mvn clean install",
+        "test": "cd client && npm test && cd ../backend && mvn test"
+      }
+    }
+  }
 }
