@@ -34,7 +34,7 @@ jobs:
           -Dsonar.java.binaries=**/target/classes
     - name: Run tests
       run: mvn test
-
+      working-directory: backend
   build_client:
     runs-on: ubuntu-latest
 
