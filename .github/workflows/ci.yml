@@ -31,6 +31,7 @@ jobs:
         args: >
           -Dsonar.organization=awesomegardning
           -Dsonar.projectKey=Batman089_awesomegardning
+          -Dsonar.java.binaries=**/target/classes
     - name: Run tests
       run: mvn test
 
@@ -62,6 +63,7 @@ jobs:
         args: >
           -Dsonar.organization=awesomegardning
           -Dsonar.projectKey=Batman089_awesomegardning
+          -Dsonar.java.binaries=**/target/classes
   sonar:
     runs-on: ubuntu-latest
 
@@ -77,6 +79,7 @@ jobs:
         args: >
             -Dsonar.organization=awesomegardning
             -Dsonar.projectKey=Batman089_awesomegardning
+            -Dsonar.java.binaries=**/target/classes
   deploy:
     needs: [build_backend, build_client, sonar]
     runs-on: ubuntu-latest
