@@ -36,3 +36,8 @@ COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=prepare-production ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/classes /app
 ENTRYPOINT ["java","-cp","app:app/lib/*","com.company.project.Application"]
+
+FROM amazoncorretto:17.0.2
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} awesomegardning.jar
+ENTRYPOINT ["java","-jar","/awesomegardning.jar"]
