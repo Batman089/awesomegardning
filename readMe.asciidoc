@@ -1,0 +1,328 @@
+= Task Description
+
+Essentially, it is a project involving both frontend and backend components.
+The backend will be implemented using Spring Boot, while the frontend will be implemented using Angular.
+Data will be retrieved from typical sql database as test data, and output through an interface in the backend.
+With the help of the OpenApi specification, the frontend will be able to communicate with the backend.
+The result should be displayed in the frontend. The frontend only needs to fulfill the basic functions; any additional visual enhancements are optional.
+The Frontend has no complicated requirements, but the backend must be implemented in a clean and structured manner.
+
+== Quality Requirements
+
+[cols="20,35,25,20", options="header"]
+|===
+| Quality Criterion | Description | Goals | Measures
+
+| *1. Reliability*
+| The ability of the application to function stably and error-free even with unexpected inputs and high load.
+| - Reliable processing of user inputs
+| - Extensive test coverage with unit tests
+- Catching of exceptions and error handling
+
+| *2. Portability*
+| Flexibility of the application regarding the runtime environment.
+| - Use resources efficiently
+| - Containerization using Docker to isolate runtime environments and ensure platform independence
+- Docker-Compose file for starting services
+- Deployment on a cloud platform
+
+| *3. Usability*
+| Easy implementation and operation of the application for developer.
+| - Simple and well documented API
+- Clear separation of frontend and backend
+| - API documentation in OpenAPI format
+- Documentation in arc42 format
+- Troubleshooting guide
+|===
+
+== Stakeholders
+
+[cols="20,30", options="header"]
+|===
+| Role | Contact
+
+| Trainer
+| Beneken, Gerd (gerd.beneken@th-rosenheim.de)
+
+| Trainer
+| Reimer, Mario-Leander (mario-leander.reimer@th-rosenheim.de)
+
+| Developer
+| Me
+|===
+
+== Technical specifications
+
+Programming languages and frameworks:
+
+* Backend: Spring Boot (Java 17)
+* Frontend: Angular (TypeScript), Node.js 20.x
+* Database: PostgreSQL
+* Documentation: arc42
+* API documentation: OpenAPI
+* Containerization: Docker
+* Deployment: Heroku platform
+* Code repository: GitHub
+* Code quality: SonarCloud
+* Pipeline: GitHub Actions
+
+== Organizational specifications
+
+* The project was part of the Software Quality and Security course at the Rosenheim University of Applied Sciences.
+* The project was conducted as an individual assignment.
+* There was no team work involved.
+* The instructor was available for assistance during all exercises throughout the semester.
+* The project duration was one semester, with the submission date on 23.06.2024.
+* The project must be publicly available in a GitHub repository. Other Git platforms were not allowed, necessitating the use of GitHub Actions.
+* Additionally, SonarCloud was required to ensure code quality.
+* For documentation, the https://arc42.org/[arc42] format had to be used.
+
+== Conventions
+
+== Context Boundaries
+
+=== Use case context
+
+The database of the project contains some information about plants. These information can be accessed by the user through the frontend. The user can search for plants by their name, and the system will return the information about the plant.
+
+== Technical Context
+
+=== Project Architecture:
+
+[plantuml, fullstack-architecture, png]
+----
+
+@startuml
+!define RECTANGLE class
+
+RECTANGLE Backend {
+  + Spring Boot Server (2.6.3)
+  + Java 17
+}
+
+RECTANGLE Client {
+  + Angular (v18.x)
+  + Node (20.x)
+  + Angular Material
+}
+
+RECTANGLE Database {
+  + Posgresql (v14.0)
+}
+
+Client --> Backend : HTTP requests
+Backend --> Database : SQL queries
+Database --> Backend : SQL responses
+Backend --> Client : HTTP responses
+
+@enduml
+----
+
+== Components
+
+=== Backend
+* Spring Boot Server (2.6.3)
+* Java 17
+
+=== Client
+* Angular (v18.x)
+* Node (20.x)
+* Angular Material
+
+=== Database
+* Posgresql (v14.0)
+
+== Component View
+
+== Whitebox Overall System
+
+*The overall system consists of multiple interconnected components for showing the plant information. It`s basically in form of simple fullstack project with a database.
+This overview diagram provides a view of the interactions and dependencies between the individual components.*
+
+Included Components
+- Spring Boot Backend
+- Angular Frontend
+- PostgreSQL Database
+- Docker Container
+- GitHub Actions
+- SonarCloud Analysis
+- OpenAPI Documentation
+- Heroku Deployment
+- OpenAPI Documentation
+- arc42 Documentation
+- Conventional Commits
+- Linting and Testing Tools
+- RESTful API interfaces between Backend and Frontend
+
+
+[plantuml]
+----
+@startuml
+
+actor User
+participant "Frontend" as Frontend
+participant "Spring Boot Backend" as Backend
+participant "PostgreSQL Database" as Database
+
+User -> Frontend: 1. Makes a request
+Frontend -> Backend: 2. Sends request
+Backend -> Database: 3. Stores data
+Backend -> Frontend: 4. Sends data
+Frontend -> User: 5. Displays data
+
+@enduml
+----
+
+== Infrastructure
+
+
+=== Docker Infrastructure Diagram
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectnumlevels: 4
+:icons: font
+
+== Overview
+
+This section provides a visual representation of the Docker infrastructure for the project using a PlantUML diagram.
+
+== Infrastructure Diagram
+
+[plantuml, docker-infrastructure, png]
+----
+@startuml
+package "Docker Infrastructure" {
+  [Backend Service\nInternal Port: 8080\nExternal Port: 8080] as Backend
+  [Database Service\nInternal Port: 5432\nExternal Port: 5432] as Database
+  [PgAdmin Service\nInternal Port: 80\nExternal Port: 5050] as PgAdmin
+  [Client Service\nInternal Port: 4200\nExternal Port: 4200] as Client
+
+  Backend --> Database : SQL Queries
+  Database --> Backend : SQL Responses
+  Client --> Backend : HTTP Requests
+  Backend --> Client : HTTP Responses
+  PgAdmin --> Database : Admin Requests
+  Database --> PgAdmin : Admin Responses
+}
+@enduml
+----
+
+This diagram illustrates the interactions between the different services in the Docker infrastructure. The arrows represent the direction of communication between the services.
+
+
+**Justification for Architectural Division**
+
+The architectural division of the application into separate frontend, backend, external API, and database components offers several advantages:
+
+1. **Scalability and Flexibility**:
+- By using separate containers for the frontend and backend, we can scale resources independently.
+This allows better adaptation to change load requirements and optimizes resource utilization.
+- To be fair, for a better separation of concerns, the frontend and backend should be in fully separate repository and Containers.
+- Now the frontend and backend can be developed, tested, and deployed semi-independently, enabling faster development cycles and more efficient resource allocation
+
+2. **Decoupling and Maintainability**:
+- Placing the REST-API and the database outside the backend container enables clear separation of responsibilities and reduces dependencies between components.
+Updates or changes to the REST-API or the database can be performed independently of the Frontend (client), improving application maintainability.
+
+3. **Security**:
+- Isolating components in separate containers enhances application security. By using appropriate network rules,
+we can effectively control and protect access to sensitive resources such as the database and the RestAPI.
+
+4. **Technological Diversity and Integration**:
+- External placement of the external API and the database allows us to use different technologies and services for specific requirements. For example, we can host the database on a cloud platform and provide the external API from an external service, saving costs and optimizing performance.
+
+=== CI/CD Pipeline Architecture Diagram
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectnumlevels: 4
+:icons: font
+
+==== Overview
+
+This section provides a visual representation of the CI/CD pipeline architecture for the project using a PlantUML diagram.
+
+==== Architecture Diagram
+
+[plantuml, ci-cd-pipeline, png]
+----
+@startuml
+actor Developer
+participant "GitHub" as GH
+participant "Build Backend" as BB
+participant "Build Client" as BC
+participant "SonarCloud Scan" as SC
+participant "Deploy to Heroku" as DH
+
+Developer -> GH : Pushes code
+GH -> BB : Triggers build
+BB -> GH : Sends build status
+GH -> BC : Triggers build
+BC -> GH : Sends build status
+GH -> SC : Triggers scan
+SC -> GH : Sends scan status
+GH -> DH : Triggers deployment
+DH -> GH : Sends deployment status
+@enduml
+----
+
+This diagram illustrates the interactions between the different stages in the CI/CD pipeline.
+The arrows represent the direction of communication between the stages.
+
+== Architecture Decisions
+
+The architecture decisions for the project were carefully made to ensure a robust and maintainable
+application with according to the current knowledge of the developer.
+
+== Technology Choice
+
+* Spring Boot: The Spring Boot was chosen to take advantage of current features and security updates.
+Spring Boot is known for its simple configuration and strong support for microservices development.
+* Angular: The latest of Angular was chosen for the frontend as it is a flexible and powerful library for creating user interfaces and strong community.
+* PostgreSQL: PostgreSQL was chosen as the database because of its reliability, scalability, and UI-Support-Services (PGAdmin) for queries.
+
+== Development Process
+
+* Backend: The development process started with the completion of the backend to create a stable foundation for the entire system.
+There are some patterns and best practices that were followed to ensure high code quality. The Templates for manually handling exceptions for further steps in the development process.
+* Frontend: After successful backend and REST-Api development, the frontend was created and subsequently integrated.
+There are also some patterns and structures that were followed to ensure high code quality.
+* Testing: Extensive tests were conducted to ensure that all components work smoothly together. SwaggerUI was used for API testing.
+* Documentation: The project was documented using the arc42 template to ensure that all aspects of the project are well-documented and understandable.
+
+== Deployment and Containerization
+
+* Docker: The application was containerized to ensure a consistent environment for development.
+* Docker Compose: A Docker Compose file was created for container orchestration, tested locally, and then integrated into GitHub Actions.
+* GitHub Actions: Automated CI/CD pipelines were set up to continuously integrate and deploy the application.
+
+== Quality Requirements
+
+* SonarCloud: SonarCloud was integrated to check code quality. All issues reported by SonarCloud were fixed to ensure high code quality.
+* OpenAPI: Finally, OpenAPI was used to comprehensively document and describe the API, increasing its understandability and usability.
+
+== Risks and Technical Debt
+
+== Risks
+
+1. **Scalability:**
+ For better performance and scalability, the application must be seperated into microservices and optimized for high load. For example, implementing helm and kubernetes for better scalability.
+
+2. **Security Risks**
+ The application must be protected against potential security threats, including SQL injection, cross-site scripting (XSS), and unauthorized data access.
+There are some validation methods and patterns implemented to prevent these risks.
+
+== Technical Debt
+
+1. **Tests**
+ Some parts of the application are not fully covered by tests, increasing the risk of undetected errors. JUnit and Mockito could be used for testing.
+
+2. **Outdated Technologies**
+Using outdated versions of libraries or frameworks can lead to security vulnerabilities and incompatibilities.
+There is a denedeny bot intgraed to check for outdated dependencies but it is not fully configured.
+
+3. **Insufficient Documentation**
+ Insufficient documentation can make maintaining the application difficult and hinder onboarding new developers.
+
+
