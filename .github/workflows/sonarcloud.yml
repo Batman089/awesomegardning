@@ -52,6 +52,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  
         with:
           args:
-            -Dsonar.projectKey=batman089
+            -Dsonar.projectKey=awesomegardning
             -Dsonar.organization=HappyPanda
           projectBaseDir: .

@@ -70,7 +70,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
         args: >
-            - Dsonar.organization=batman089
+            - Dsonar.organization=HappyPanda
             - Dsonar.projectKey=awesomegardning
   deploy:
     needs: [build_backend, build_client, sonar]
