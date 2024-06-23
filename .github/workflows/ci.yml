@@ -95,3 +95,5 @@ jobs:
         heroku_app_name: "safe-awesomegardning" # Replace with your Heroku app name
         heroku_email: "Jassinakhlaqi@hotmail.com" # Replace with your Heroku email
         usedocker: true # Required for deploying Java applications
+        healthcheck: true # Optional, waits for the app to boot
+        dontuseforce: true # Optional, set to true to prevent force push
